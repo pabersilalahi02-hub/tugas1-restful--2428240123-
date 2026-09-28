@@ -81,3 +81,94 @@ app.get("/tour-packages/:id", (req, res) => {
 
     res.status(200).json(data);
 });
+
+// =========================
+// POST /tour-packages
+// =========================
+app.post("/tour-packages", (req, res) => {
+    const {
+        namaPaket,
+        tujuan,
+        durasiHari,
+        harga,
+        kuota
+    } = req.body;
+
+    // Validasi field wajib
+    if (
+        !namaPaket ||
+        !tujuan ||
+        durasiHari === undefined ||
+        harga === undefined
+    ) {
+        return res.status(400).json({
+            status: "error",
+            message: "Field wajib harus diisi",
+            data: null
+        });
+    }
+
+    const newPackage = {
+        id: nextId++,
+        namaPaket,
+        tujuan,
+        durasiHari,
+        harga,
+        kuota: kuota ?? null
+    };
+
+    tourPackages.push(newPackage);
+
+    res.status(201).json({
+        status: "success",
+        message: "Data berhasil ditambahkan",
+        data: newPackage
+    });
+});
+
+        data: updatedPackage
+    });
+});
+
+// =========================
+// DELETE /tour-packages/:id
+// =========================
+app.delete("/tour-packages/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const index = tourPackages.findIndex(item => item.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            status: "error",
+            message: `Data dengan id ${id} tidak ditemukan`,
+            data: null
+        });
+    }
+
+    tourPackages.splice(index, 1);
+
+    res.status(200).json({
+        status: "success",
+        message: `Data paket wisata dengan id ${id} berhasil dihapus`,
+        data: null
+    });
+});
+
+// =========================
+// Endpoint tidak ditemukan
+// =========================
+app.use((req, res) => {
+    res.status(404).json({
+        status: "error",
+        message: "Endpoint tidak ditemukan",
+        data: null
+    });
+});
+
+// =========================
+// Menjalankan server
+// =========================
+app.listen(PORT, () => {
+    console.log(`Server berjalan di http://localhost:${PORT}`);
+});
