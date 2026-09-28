@@ -82,9 +82,6 @@ app.get("/tour-packages/:id", (req, res) => {
     res.status(200).json(data);
 });
 
-// =========================
-// POST /tour-packages
-// =========================
 app.post("/tour-packages", (req, res) => {
     const {
         namaPaket,
@@ -126,9 +123,6 @@ app.post("/tour-packages", (req, res) => {
     });
 });
 
-// =========================
-// PUT /tour-packages/:id
-// =========================
 app.put("/tour-packages/:id", (req, res) => {
     const id = parseInt(req.params.id);
 
@@ -182,9 +176,6 @@ app.put("/tour-packages/:id", (req, res) => {
     });
 });
 
-// =========================
-// DELETE /tour-packages/:id
-// =========================
 app.delete("/tour-packages/:id", (req, res) => {
     const id = parseInt(req.params.id);
 
