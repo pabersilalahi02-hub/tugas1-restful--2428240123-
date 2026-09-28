@@ -126,6 +126,58 @@ app.post("/tour-packages", (req, res) => {
     });
 });
 
+// =========================
+// PUT /tour-packages/:id
+// =========================
+app.put("/tour-packages/:id", (req, res) => {
+    const id = parseInt(req.params.id);
+
+    const index = tourPackages.findIndex(item => item.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({
+            status: "error",
+            message: `Data dengan id ${id} tidak ditemukan`,
+            data: null
+        });
+    }
+
+    const {
+        namaPaket,
+        tujuan,
+        durasiHari,
+        harga,
+        kuota
+    } = req.body;
+
+    // Validasi field wajib
+    if (
+        !namaPaket ||
+        !tujuan ||
+        durasiHari === undefined ||
+        harga === undefined
+    ) {
+        return res.status(400).json({
+            status: "error",
+            message: "Field wajib harus diisi",
+            data: null
+        });
+    }
+
+    const updatedPackage = {
+        id,
+        namaPaket,
+        tujuan,
+        durasiHari,
+        harga,
+        kuota: kuota ?? null
+    };
+
+    tourPackages[index] = updatedPackage;
+
+    res.status(200).json({
+        status: "success",
+        message: "Data berhasil diperbarui",
         data: updatedPackage
     });
 });
